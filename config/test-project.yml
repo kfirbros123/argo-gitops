@@ -7,6 +7,8 @@ spec:
   description: Allow access to a specific Git repository and branch
   sourceRepos:
     - https://github.com/kfirbros123/argo-gitops.git
+    - https://github.com/kfirbros123/home-app.git
+    - https://github.com/kfirbros123/test-app.git
   destinations:
     - namespace: '*'
       server: https://kubernetes.default.svc

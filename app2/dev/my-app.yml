@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kfir-deploy
+  labels:
+    name: kfir-deploy
+spec:
+  selector: 
+    matchLabels:
+      name: kfir-deploy
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: kfir-deploy
+    spec:
+      containers:
+      - name: kfir-deploy
+        image: kfire312/jb-practice:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000

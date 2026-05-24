@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: example-applicationset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - cluster: dev
+            project: app1
+          - cluster: qa
+            project: app2
+  template:
+    metadata:
+      name: '{{project}}-{{cluster}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/kfirbros123/argo-gitops.git
+        targetRevision: application
+        path: '{{project}}/{{cluster}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{project}}-{{cluster}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

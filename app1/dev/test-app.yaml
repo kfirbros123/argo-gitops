@@ -1,0 +1,82 @@
+---
+# Source: eyal/templates/service.yaml
+kind: Service     
+apiVersion: v1     
+metadata:
+  name: test-app-service 
+  labels:
+    
+    generator: helm
+    date: 2026-06-10
+    name: test-app
+spec:
+  selector:
+    
+    generator: helm
+    date: 2026-06-10
+    name: test-app
+  type: ClusterIP
+
+  ports:         
+  - name: http   
+    protocol: 
+    port: 8000
+    targetPort: 8000
+---
+# Source: eyal/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-app-deploy
+  labels:
+    
+    generator: helm
+    date: 2026-06-10
+    name: test-app
+spec:
+  selector: 
+    matchLabels:
+      
+      generator: helm
+      date: 2026-06-10
+      name: test-app
+  replicas: 1  
+  template:
+    metadata:
+      labels:
+        
+        generator: helm
+        date: 2026-06-10
+        name: test-app
+    spec:
+      containers:
+      - name: test-app 
+        image: kfire312/exam-app:latest 
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+---
+# Source: eyal/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name:  test-app-ingress
+  labels:
+    
+    generator: helm
+    date: 2026-06-10
+    name: test-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name:  test-app-service
+                port:
+                  number: 8000

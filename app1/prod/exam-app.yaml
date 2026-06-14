@@ -40,7 +40,7 @@ spec:
       generator: helm
       date: 2026-06-14
       name: exam-app
-  replicas: 1  
+  replicas: 2  
   template:
     metadata:
       labels:

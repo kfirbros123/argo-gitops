@@ -119,6 +119,17 @@ helm upgrade --install argocd argo/argo-cd  --namespace argocd
 #with amazon you can use this patch to get a loadbalancer for argocd
 kubectl patch svc  -n argocd argocd-server -p '{"spec": {"type": "LoadBalancer"}}' 
 
+#with google cloudshell
+kubectl patch deployment argocd-server -n argocd \ \
+--type='json' \
+-p='[
+  {
+    "op":"add",
+    "path":"/spec/template/spec/containers/0/args/-",
+    "value":"--insecure"
+  }
+]'
+
 #get admin password
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d ; echo
 
@@ -149,9 +160,9 @@ kubectl get applications -n argocd
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 
 # Port-forward ArgoCD UI
-kubectl port-forward svc/argocd-server -n argocd 8080:443
+kubectl port-forward svc/argocd-server -n argocd 8080:80
 
-# Access at https://localhost:8080
+# Access at cloudshell web preview
 # Username: admin
 # Password: (from previous command)
 ```

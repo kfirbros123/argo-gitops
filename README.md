@@ -120,15 +120,8 @@ helm upgrade --install argocd argo/argo-cd  --namespace argocd
 kubectl patch svc  -n argocd argocd-server -p '{"spec": {"type": "LoadBalancer"}}' 
 
 #with google cloudshell
-kubectl patch deployment argocd-server -n argocd \ \
---type='json' \
--p='[
-  {
-    "op":"add",
-    "path":"/spec/template/spec/containers/0/args/-",
-    "value":"--insecure"
-  }
-]'
+kubectl patch configmap argocd-cmd-params-cm   -n argocd   --type merge   -p '{"data":{"server.insecure":"true"}}'
+kubectl -n argocd rollout restart deployment argocd-server
 
 #get admin password
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d ; echo

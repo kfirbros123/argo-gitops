@@ -7,13 +7,13 @@ metadata:
   labels:
     
     generator: helm
-    date: 2026-06-14
+    date: 2026-06-17
     name: exam-app
 spec:
   selector:
     
     generator: helm
-    date: 2026-06-14
+    date: 2026-06-17
     name: exam-app
   type: ClusterIP
 
@@ -31,14 +31,14 @@ metadata:
   labels:
     
     generator: helm
-    date: 2026-06-14
+    date: 2026-06-17
     name: exam-app
 spec:
   selector: 
     matchLabels:
       
       generator: helm
-      date: 2026-06-14
+      date: 2026-06-17
       name: exam-app
   replicas: 2  
   template:
@@ -46,7 +46,7 @@ spec:
       labels:
         
         generator: helm
-        date: 2026-06-14
+        date: 2026-06-17
         name: exam-app
     spec:
       containers:
@@ -64,7 +64,7 @@ metadata:
   labels:
     
     generator: helm
-    date: 2026-06-14
+    date: 2026-06-17
     name: exam-app
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /

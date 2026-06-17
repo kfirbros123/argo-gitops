@@ -206,66 +206,8 @@ argocd app history exam-app-dev -n argocd
 
 ## CI/CD Integration
 
-### GitHub Actions Integration
-
-```yaml
-name: Deploy to GitOps
-
-on:
-  push:
-    branches: [application]
-
-jobs:
-  update-gitops:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Update Helm values
-        run: |
-          # Update image tags, versions, etc.
-          sed -i 's/tag: .*/tag: ${{ github.sha }}/' exam-app/dev/values.yaml
-          
-      - name: Commit and push
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git add .
-          git commit -m "Update deployment for ${{ github.sha }}"
-          git push
-```
-
-### Automated Image Updates
-
-Use ArgoCD Image Updater or Renovate to automatically update image tags:
-
-```yaml
-# Example with ArgoCD Image Updater annotations
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  annotations:
-    argocd-image-updater.argoproj.io/image-list: myapp=kfire312/exam-app
-    argocd-image-updater.argoproj.io/write-back-method: git
-spec:
-  # ...
-```
-
-## Monitoring
-
-### Check Application Status
-
-```bash
-# List all applications
-argocd app list -n argocd
-
-# Get detailed status
-argocd app get exam-app-dev -n argocd
-
-# View sync status
-argocd app get exam-app-dev -n argocd -o yaml
-```
+### Github Actions Workflow   
+using the app repo workflow a new helm template manifest gets commited into the application branch of this repo 
 
 ### Logs and Debugging
 
@@ -285,8 +227,8 @@ argocd app diff exam-app-dev -n argocd
 ### 1. Branch Strategy
 
 - **Main Branch**: Production-ready configurations
-- **Develop Branch**: Development environment configurations
-- **Feature Branches**: Testing new configurations
+- **Application Branch**: Holds application manifest yamls
+- **Terraform Branches**: will create argo cluster on aws using terraform
 
 ### 2. Security
 
@@ -295,28 +237,6 @@ argocd app diff exam-app-dev -n argocd
 - Implement RBAC with ArgoCD roles
 - Use sealed secrets or external secret management
 
-### 3. Multi-Cluster
-
-For multi-cluster deployments, update the destination server:
-
-```yaml
-destination:
-  server: https://prod-cluster-api.example.com
-  namespace: exam-app
-```
-
-### 4. Helm Values Management
-
-Use separate values files for each environment:
-
-```
-exam-app/
-├── dev/
-│   └── values.yaml    # Development values
-├── prod/
-│   └── values.yaml    # Production values
-└── Chart.yaml
-```
 
 ## Troubleshooting
 

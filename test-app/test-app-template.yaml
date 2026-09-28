@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: test-app 
-        image: kfire312/exam-app:31 
+        image: kfire312/test-app:32 
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
